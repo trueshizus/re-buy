@@ -9,10 +9,18 @@ type LiveBidsProps = {
   user_name: string;
 };
 
+type Listing = {
+  name: string;
+  description: string;
+  cover: string;
+};
+
 export default function LiveBids({ maxBid, user_name }: LiveBidsProps) {
   const [isActive, setIsActive] = useState(false);
   const [activeUsers, setActiveUsers] = useState<string[]>([]);
-
+  const [listing, setListing] = useState<Listing>();
+  const [totalBids, setTotalBids] = useState(0);
+  const [isFinished, setIsFinished] = useState(false);
   useEffect(() => {
     const supabase = createClient();
     supabase
@@ -26,11 +34,18 @@ export default function LiveBids({ maxBid, user_name }: LiveBidsProps) {
           });
         }
       })
-      .on("broadcast", { event: "start" }, (payload) => {
+      .on("broadcast", { event: "start" }, ({ payload }) => {
         setIsActive(true);
+        setListing(payload.listing);
       })
       .on("broadcast", { event: "stop" }, (payload) => {
         setIsActive(false);
+      })
+      .on("broadcast", { event: "bid_placed" }, (payload) => {
+        setTotalBids((prev) => prev + 1);
+      })
+      .on("broadcast", { event: "finish" }, (payload) => {
+        setIsFinished(true);
       })
       .on("broadcast", { event: "connected" }, (payload) => {
         setActiveUsers((prev) => [...prev, payload.user_name]);
@@ -43,11 +58,15 @@ export default function LiveBids({ maxBid, user_name }: LiveBidsProps) {
 
   return (
     <div>
-      {isActive ? (
-        <BidForm maxBid={maxBid} />
+      {isActive && listing && !isFinished ? (
+        <>
+          <p>Total Bids: {totalBids}</p>
+          <BidForm maxBid={maxBid} listing={listing} />
+        </>
       ) : (
         <WaitingForBid activeUsers={activeUsers} />
       )}
+      {isFinished && <p>Finished</p>}
     </div>
   );
 }

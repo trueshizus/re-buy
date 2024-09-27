@@ -28,7 +28,7 @@ const createProfile = async (formData: FormData) => {
     console.error(error);
   }
 
-  revalidatePath("/profile");
+  redirect("/bids");
 };
 
 export default async function Page() {

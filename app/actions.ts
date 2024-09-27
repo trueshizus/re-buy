@@ -126,9 +126,17 @@ export const signOutAction = async () => {
 };
 
 export const placeBid = async (formData: FormData) => {
-  const bidAmount = formData.get("bidAmount");
-  // Here you would typically save the bid to your database
-  console.log(`Bid placed: $${bidAmount}`);
+  const supabase = createClient();
+  const channel = supabase.channel("bids");
 
-  // Revalidate the page to show the updated bid
+  channel.send({
+    type: "broadcast",
+    event: "bid_placed",
+    payload: {
+      listing: {
+        name: "Steam Card",
+        bid: formData.get("bidAmount"),
+      },
+    },
+  });
 };
