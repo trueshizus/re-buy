@@ -35,6 +35,7 @@ export default function WaitingForBid({
   activeUsers: string[];
 }) {
   const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
+  const totalUsers = activeUsers.length;
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -49,12 +50,13 @@ export default function WaitingForBid({
       <p className="text-lg text-muted-foreground mt-4 text-center pb-10">
         {phrases[currentPhraseIndex]}
       </p>
+      <p className="text-sm text-muted-foreground text-center">
+        {totalUsers} user{totalUsers === 1 ? " is" : "s are"} waiting for the
+        auction to start
+      </p>
       <div className="grid items-center h-96">
         <div className="size-80 mx-auto animate-spin duration-8000 bg-slate-500 rounded-full opacity-25">
           <AuctionSvg />
-        </div>
-        <div className="text-sm text-muted-foreground">
-          {activeUsers.map((user) => user).join(", ")}
         </div>
       </div>
     </div>
