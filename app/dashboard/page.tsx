@@ -1,11 +1,9 @@
 import Listings from "@/components/listings";
 import { createClient } from "@/utils/supabase/server";
 
-const supabase = createClient();
-
 const handleAction = async (formData: FormData) => {
   "use server";
-
+  const supabase = createClient();
   const channel = supabase.channel("bids");
 
   const action = formData.get("action");
