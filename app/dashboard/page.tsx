@@ -1,3 +1,4 @@
+import Listings from "@/components/listings";
 import { createClient } from "@/utils/supabase/server";
 
 const supabase = createClient();
@@ -43,6 +44,8 @@ export default function Page() {
           Stop
         </button>
       </form>
+
+      <Listings />
     </div>
   );
 }
