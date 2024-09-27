@@ -66,7 +66,14 @@ export default function LiveBids({ maxBid, user_name }: LiveBidsProps) {
       ) : (
         <WaitingForBid activeUsers={activeUsers} />
       )}
-      {isFinished && <p>Finished</p>}
+      {isFinished && (
+        <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
+          <p>
+            Congratulations! The steam card is yours! Your steam code:
+            XRNM-N31M-123456
+          </p>
+        </div>
+      )}
     </div>
   );
 }
