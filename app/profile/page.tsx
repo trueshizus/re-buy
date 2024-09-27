@@ -44,8 +44,13 @@ export default async function Page() {
 
   const profile = await getProfile();
 
-  const createProfileForm = () => {
-    return (
+  if (profile && !Array.isArray(profile)) {
+    return <div>Welcome to ReBuy, {profile.user_name}</div>;
+  }
+
+  return (
+    <main>
+      <h1>Profile</h1>
       <form action={createProfile} className="space-y-4">
         <input
           required
@@ -62,18 +67,6 @@ export default async function Page() {
           Create Profile
         </button>
       </form>
-    );
-  };
-
-  return (
-    <main>
-      <h1>Profile</h1>
-
-      {profile ? (
-        <div>Welcome to ReBuy, {profile.user_name}</div>
-      ) : (
-        createProfileForm()
-      )}
     </main>
   );
 }
