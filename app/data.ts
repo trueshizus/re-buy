@@ -1,11 +1,10 @@
 "use server";
 
 import { createClient } from "@/utils/supabase/server";
-import { redirect } from "next/navigation";
-
-const supabase = createClient();
 
 export const getProfile = async () => {
+  const supabase = createClient();
+
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -16,7 +15,8 @@ export const getProfile = async () => {
 
   let { data: profiles, error } = await supabase
     .from("profiles")
-    .select("user_name, credits");
+    .select("user_name, credits")
+    .single();
 
   return profiles;
 };

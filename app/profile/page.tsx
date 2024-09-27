@@ -21,7 +21,6 @@ const createProfile = async (formData: FormData) => {
     .insert([
       {
         user_name: formData.get("user_name"),
-        user_id: user.id,
         credits: 1000,
       },
     ])
@@ -66,15 +65,15 @@ export default async function Page() {
     );
   };
 
-  const welcomeMessage = () => {
-    return <div>Welcome to ReBuy, {profile?.[0].user_name}</div>;
-  };
-
   return (
     <main>
       <h1>Profile</h1>
 
-      {profile ? welcomeMessage() : createProfileForm()}
+      {profile ? (
+        <div>Welcome to ReBuy, {profile.user_name}</div>
+      ) : (
+        createProfileForm()
+      )}
     </main>
   );
 }

@@ -17,8 +17,6 @@ const handleAction = async (formData: FormData) => {
     event: action as string,
     payload: { message: "Hi" },
   });
-
-  console.log(action);
 };
 
 export default function Page() {

@@ -28,7 +28,7 @@ export const signUpAction = async (formData: FormData) => {
     return encodedRedirect("error", "/sign-up", error.message);
   }
 
-  return redirect("/bids");
+  return redirect("/profile");
 };
 
 export const signInAction = async (formData: FormData) => {
