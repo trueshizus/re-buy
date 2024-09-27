@@ -8,10 +8,10 @@ export default async function Page() {
     return <div>Loading...</div>;
   }
   const maxBid = "credits" in profile ? profile.credits : 0;
+  const user_name = "user_name" in profile ? profile.user_name : "";
   return (
     <main>
-      <h1>Bids</h1>
-      <LiveBids maxBid={maxBid} />
+      <LiveBids maxBid={maxBid} user_name={user_name} />
     </main>
   );
 }

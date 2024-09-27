@@ -3,13 +3,15 @@
 import { createClient } from "@/utils/supabase/client";
 import { useEffect, useState } from "react";
 import BidForm from "./bid-form";
-
+import WaitingForBid from "@/components/waiting-for-bid";
 type LiveBidsProps = {
   maxBid: number;
+  user_name: string;
 };
 
-export default function LiveBids({ maxBid }: LiveBidsProps) {
+export default function LiveBids({ maxBid, user_name }: LiveBidsProps) {
   const [isActive, setIsActive] = useState(false);
+  const [activeUsers, setActiveUsers] = useState<string[]>([]);
 
   useEffect(() => {
     const supabase = createClient();
@@ -20,7 +22,7 @@ export default function LiveBids({ maxBid }: LiveBidsProps) {
           supabase.channel("bids").send({
             type: "broadcast",
             event: "connected",
-            payload: { user_id: "123" },
+            payload: { user_name },
           });
         }
       })
@@ -29,6 +31,9 @@ export default function LiveBids({ maxBid }: LiveBidsProps) {
       })
       .on("broadcast", { event: "stop" }, (payload) => {
         setIsActive(false);
+      })
+      .on("broadcast", { event: "connected" }, (payload) => {
+        setActiveUsers((prev) => [...prev, payload.user_name]);
       });
 
     return () => {
@@ -38,8 +43,11 @@ export default function LiveBids({ maxBid }: LiveBidsProps) {
 
   return (
     <div>
-      <h1>Live Bids</h1>
-      {isActive ? <BidForm maxBid={maxBid} /> : <p>No bids</p>}
+      {isActive ? (
+        <BidForm maxBid={maxBid} />
+      ) : (
+        <WaitingForBid activeUsers={activeUsers} />
+      )}
     </div>
   );
 }

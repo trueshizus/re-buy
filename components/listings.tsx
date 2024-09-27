@@ -1,10 +1,10 @@
 import { createClient } from "@/utils/supabase/server";
 import ListingCard from "./listing-card";
 import { revalidatePath } from "next/cache";
-const supabase = createClient();
 
 const createListings = async (formData: FormData) => {
   "use server";
+  const supabase = createClient();
   const user = await supabase.auth.getUser();
 
   if (!user.data.user) {
@@ -28,6 +28,7 @@ const createListings = async (formData: FormData) => {
 };
 
 const getListings = async () => {
+  const supabase = createClient();
   let { data: listings, error } = await supabase.from("listings").select("*");
 
   return listings;
@@ -40,11 +41,15 @@ export default async function Listings() {
     <div>
       <h2>Listings</h2>
 
-      <div className="grid grid-cols-4 gap-4">
-        {listings?.map((listing) => (
-          <ListingCard key={listing.id} listing={listing} />
-        ))}
-      </div>
+      {listings?.length === 0 ? (
+        <p>No listings found</p>
+      ) : (
+        <div className="grid grid-cols-4 gap-4">
+          {listings?.map((listing) => (
+            <ListingCard key={listing.id} listing={listing} />
+          ))}
+        </div>
+      )}
 
       <details>
         <summary>Create Listing</summary>
