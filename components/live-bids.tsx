@@ -2,8 +2,13 @@
 
 import { createClient } from "@/utils/supabase/client";
 import { useEffect, useState } from "react";
+import BidForm from "./bid-form";
 
-export default function LiveBids() {
+type LiveBidsProps = {
+  maxBid: number;
+};
+
+export default function LiveBids({ maxBid }: LiveBidsProps) {
   const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
@@ -34,7 +39,7 @@ export default function LiveBids() {
   return (
     <div>
       <h1>Live Bids</h1>
-      {isActive ? <p>Active</p> : <p>Inactive</p>}
+      {isActive ? <BidForm maxBid={maxBid} /> : <p>No bids</p>}
     </div>
   );
 }

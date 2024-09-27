@@ -124,3 +124,11 @@ export const signOutAction = async () => {
   await supabase.auth.signOut();
   return redirect("/sign-in");
 };
+
+export const placeBid = async (formData: FormData) => {
+  const bidAmount = formData.get("bidAmount");
+  // Here you would typically save the bid to your database
+  console.log(`Bid placed: $${bidAmount}`);
+
+  // Revalidate the page to show the updated bid
+};

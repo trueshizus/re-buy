@@ -1,27 +1,11 @@
-import { revalidatePath } from "next/cache";
 import RangeInput from "./range-input";
-import { getProfile } from "@/app/data";
+import { placeBid } from "@/app/actions";
 
-async function placeBid(formData: FormData) {
-  "use server";
+type BidFormProps = {
+  maxBid: number;
+};
 
-  const bidAmount = formData.get("bidAmount");
-  // Here you would typically save the bid to your database
-  console.log(`Bid placed: $${bidAmount}`);
-
-  // Revalidate the page to show the updated bid
-  revalidatePath("/");
-}
-
-export default async function BidForm() {
-  const profile = await getProfile();
-
-  if (!profile) {
-    return <div>Loading...</div>;
-  }
-
-  const maxBid = "credits" in profile ? profile.credits : 0;
-
+export default function BidForm({ maxBid }: BidFormProps) {
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-4">Place Your Bid</h2>
