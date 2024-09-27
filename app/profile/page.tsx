@@ -3,11 +3,9 @@ import { redirect } from "next/navigation";
 import { getProfile } from "../data";
 import { revalidatePath } from "next/cache";
 
-const supabase = createClient();
-
 const createProfile = async (formData: FormData) => {
   "use server";
-
+  const supabase = createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -34,6 +32,7 @@ const createProfile = async (formData: FormData) => {
 };
 
 export default async function Page() {
+  const supabase = createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
