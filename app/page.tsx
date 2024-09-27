@@ -13,7 +13,7 @@ export default async function Index() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    return redirect("/sign-in");
+    return redirect("/sign-up");
   }
 
   return (
