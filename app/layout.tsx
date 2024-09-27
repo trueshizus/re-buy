@@ -35,7 +35,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Navigation />
-          <div className="container mx-auto">{children}</div>
+          <div className="container mx-auto mt-16">{children}</div>
 
           <Footer />
         </ThemeProvider>
